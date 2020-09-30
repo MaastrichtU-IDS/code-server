@@ -11,6 +11,8 @@ RUN yum install -y epel-release \
   python36-devel \
  && localedef -i en_US -f UTF-8 en_US.UTF-8
 
+# Add fusion repo for more packages
+RUN yum localinstall --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
 
 # Install Java and NodeJS
 RUN curl -sL https://rpm.nodesource.com/setup_12.x | bash -
@@ -34,6 +36,8 @@ RUN pip install jupyter_contrib-nbextensions RISE \
   && jupyter nbextension enable hide_input/main
 RUN rm ijava-kernel.zip
 
+# Dependencyies for matplotlib
+RUN yum install -y ffmpeg dvipng
 
 ## Install Spark
 ARG spark_version="3.0.1"
@@ -47,7 +51,6 @@ ENV APACHE_SPARK_VERSION="${spark_version}" \
 # Spark installation
 WORKDIR /tmp
 # Using the preferred mirror to download Spark
-# hadolint ignore=SC2046
 RUN wget -q $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${APACHE_SPARK_VERSION}/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz\?as_json | \
     python -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
     echo "${spark_checksum} *spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" | sha512sum -c - && \
@@ -64,16 +67,49 @@ ENV PYTHONPATH="${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-${py4j_versio
     PATH=$PATH:$SPARK_HOME/bin
 
 
+COPY . /tmp/src
+
+RUN rm -rf /tmp/src/.git* && \
+    chown -R 1001 /tmp/src && \
+    chgrp -R 0 /tmp/src && \
+    chmod -R g+w /tmp/src && \
+    rm -rf /tmp/scripts && \
+    mv /tmp/src/.s2i/bin /tmp/scripts && \
+    mkdir -p /usr/src/root && \
+    chown -R 1001 /usr/src/root && \
+    chown -R 1001 /usr/local
+
+
 # Install pip packages
-RUN pip install -r requirements.txt
+RUN pip install -r /tmp/src/requirements.txt
 
 
 USER 1001
 
+RUN echo "${NB_USER}"
 # Install pyarrow
-RUN conda install --quiet --yes --satisfied-skip-solve \
-    'pyarrow=1.0.*' && \
+RUN conda install --quiet --yes --satisfied-skip-solve 'pyarrow=1.0.*'
+RUN conda clean --all -f -y 
+RUN fix-permissions "${CONDA_DIR}" 
+RUN fix-permissions "/home"
+
+# R packages
+RUN conda install --quiet --yes \
+    'r-base=3.6.3' \
+    'r-ggplot2=3.3*' \
+    'r-irkernel=1.1*' \
+    'r-rcurl=1.98*' \
+    'r-sparklyr=1.2*' \
+    && \
     conda clean --all -f -y && \
+    fix-permissions "${CONDA_DIR}" && \
+    fix-permissions "/home/${NB_USER}"
+
+# Spylon-kernel
+RUN conda install --quiet --yes 'spylon-kernel=0.4*' && \
+    conda clean --all -f -y && \
+    python -m spylon_kernel install --sys-prefix && \
+    rm -rf "/home/${NB_USER}/.local" && \
     fix-permissions "${CONDA_DIR}" && \
     fix-permissions "/home/${NB_USER}"
 
