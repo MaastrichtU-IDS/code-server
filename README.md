@@ -54,3 +54,13 @@ Use different tags for different versions, e.g. for a Julia notebook build:
 docker build -f julia.Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:julia .
 ```
 
+## JupyterHub with GitHub OAuth template
+
+You can also find an OpenShift template based on [jackfrost373/jupyter-root](https://github.com/jackfrost373/jupyter-root) and https://github.com/jupyter-on-openshift/jupyterhub-quickstart
+
+Add the template to your project:
+
+```bash
+oc apply -f template-jupyterhub.yml
+```
+

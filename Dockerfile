@@ -82,11 +82,10 @@ ENV PYTHONPATH="${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-${py4j_versio
 # # Install pip packages
 # RUN pip install -r /tmp/src/requirements.txt
 
-
-USER 1001
-
 COPY . /tmp/src
 RUN pip install -r /tmp/src/requirements.txt
+
+USER 1001
 
 ### Install Python 3 packages using conda
 # RUN conda install --quiet --yes \
