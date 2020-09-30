@@ -25,7 +25,7 @@ RUN unzip ijava-kernel.zip -d ijava-kernel \
   && cd ijava-kernel \
   && python3 install.py --sys-prefix
 
-# Install jupyter RISE extension (for IJava)
+# Install jupyter RISE extension (with IJava).
 RUN pip install jupyter_contrib-nbextensions RISE \
   && jupyter-nbextension install rise --py --system \
   && jupyter-nbextension enable rise --py --system \
@@ -33,37 +33,12 @@ RUN pip install jupyter_contrib-nbextensions RISE \
   && jupyter nbextension enable hide_input/main
 RUN rm ijava-kernel.zip
 
-# Add fusion repo for ffmpeg
-RUN yum localinstall -y --nogpgcheck https://download1.rpmfusion.org/free/el/rpmfusion-free-release-7.noarch.rpm
-# Dependencyies for matplotlib
-RUN yum install -y ffmpeg dvipng
+# Dependencies for matplotlib
+RUN yum install -y dvipng
 
-## Install Spark
-ARG spark_version="3.0.1"
-ARG hadoop_version="3.2"
-ARG spark_checksum="E8B47C5B658E0FBC1E57EEA06262649D8418AE2B2765E44DA53AAF50094877D17297CC5F0B9B35DF2CEEF830F19AA31D7E56EAD950BBE7F8830D6874F88CFC3C"
-ARG py4j_version="0.10.9"
-
-ENV APACHE_SPARK_VERSION="${spark_version}" \
-    HADOOP_VERSION="${hadoop_version}"
-
-# Spark installation
-WORKDIR /tmp
-# Using the preferred mirror to download Spark
-RUN wget -q $(wget -qO- https://www.apache.org/dyn/closer.lua/spark/spark-${APACHE_SPARK_VERSION}/spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz\?as_json | \
-    python -c "import sys, json; content=json.load(sys.stdin); print(content['preferred']+content['path_info'])") && \
-    echo "${spark_checksum} *spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" | sha512sum -c - && \
-    tar xzf "spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz" -C /usr/local --owner root --group root --no-same-owner && \
-    rm "spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}.tgz"
-
-WORKDIR /usr/local
-RUN ln -s "spark-${APACHE_SPARK_VERSION}-bin-hadoop${HADOOP_VERSION}" spark
-
-# Configure Spark
-ENV SPARK_HOME=/usr/local/spark
-ENV PYTHONPATH="${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-${py4j_version}-src.zip" \
-    SPARK_OPTS="--driver-java-options=-Xms1024M --driver-java-options=-Xmx4096M --driver-java-options=-Dlog4j.logLevel=info" \
-    PATH=$PATH:$SPARK_HOME/bin
+# Install Julia lang
+RUN dnf copr enable nalimilan/julia
+RUN yum install julia
 
 ## Permission setup from ROOT notebook
 # COPY . /tmp/src
@@ -79,11 +54,23 @@ ENV PYTHONPATH="${SPARK_HOME}/python:${SPARK_HOME}/python/lib/py4j-${py4j_versio
 #     chown -R 1001 /usr/local
 
 
-# # Install pip packages
-# RUN pip install -r /tmp/src/requirements.txt
-
-
 USER 1001
+
+# Add Julia packages. Only add HDF5 if this is not a test-only build since
+# it takes roughly half the entire build time of all of the images on Travis
+# to add this one package and often causes Travis to timeout.
+#
+# Install IJulia as jovyan and then move the kernelspec out
+# to the system share location. Avoids problems with runtime UID change not
+# taking effect properly on the .local folder in the jovyan home dir.
+RUN julia -e 'import Pkg; Pkg.update()' && \
+    (test $TEST_ONLY_BUILD || julia -e 'import Pkg; Pkg.add("HDF5")') && \
+    julia -e "using Pkg; pkg\"add IJulia\"; pkg\"precompile\"" && \
+    # move kernelspec out of home \
+    mv "${HOME}/.local/share/jupyter/kernels/julia"* "${CONDA_DIR}/share/jupyter/kernels/" && \
+    chmod -R go+rx "${CONDA_DIR}/share/jupyter" && \
+    rm -rf "${HOME}/.local" && \
+    fix-permissions "${JULIA_PKGDIR}" "${CONDA_DIR}/share/jupyter"
 
 COPY . /tmp/src
 RUN pip install -r /tmp/src/requirements.txt
@@ -143,27 +130,32 @@ RUN git clone https://github.com/PAIR-code/facets.git && \
 ENV XDG_CACHE_HOME="/home/${NB_USER}/.cache/"
 RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot"
 
-
-# Install pyarrow
-# RUN conda install --quiet --yes --satisfied-skip-solve 'pyarrow=1.0.*'
-
-# R packages
+### R packages including IRKernel which gets installed globally.
 # RUN conda install --quiet --yes \
 #     'r-base=3.6.3' \
-#     'r-ggplot2=3.3*' \
+#     'r-caret=6.0*' \
+#     'r-crayon=1.3*' \
+#     'r-devtools=2.3*' \
+#     'r-forecast=8.13*' \
+#     'r-hexbin=1.28*' \
+#     'r-htmltools=0.5*' \
+#     'r-htmlwidgets=1.5*' \
 #     'r-irkernel=1.1*' \
+#     'r-nycflights13=1.0*' \
+#     'r-plyr=1.8*' \
+#     'r-randomforest=4.6*' \
 #     'r-rcurl=1.98*' \
-#     'r-sparklyr=1.2*'
-
-# Spylon-kernel
-# RUN conda install --quiet --yes 'spylon-kernel=0.4*' && \
-#     conda clean --all -f -y && \
-#     python -m spylon_kernel install --sys-prefix && \
-#     rm -rf "/home/${NB_USER}/.local"
+#     'r-reshape2=1.4*' \
+#     'r-rmarkdown=2.3*' \
+#     'r-rsqlite=2.2*' \
+#     'r-shiny=1.5*' \
+#     'r-tidyverse=1.3*' \
+#     'rpy2=3.3*'
 
 # RUN conda clean --all -f -y && \
 #     fix-permissions "${CONDA_DIR}" && \
 #     fix-permissions "/home/${NB_USER}"
+
 
 
 # Also activate ipywidgets/bokeh extension for JupyterLab.
@@ -171,6 +163,8 @@ RUN MPLBACKEND=Agg python -c "import matplotlib.pyplot"
 # RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager@^1.0.1 --no-build
 # RUN jupyter labextension install jupyterlab_bokeh@1.0.0 --no-build
 # RUN jupyter lab build --minimize=False
+
+
 
 # Fix permissions
 RUN fix-permissions /opt/app-root

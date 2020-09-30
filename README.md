@@ -8,6 +8,7 @@ JupyterLab with additional packages and kernel installed:
 * Java 11 and Maven
 * IJava kernel
 * SPARQL kernel
+* Spark for Python
 
 Build:
 
@@ -27,9 +28,29 @@ Push updated image:
 docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift
 ```
 
-Use different tags for different versions, e.g. for a Scala build:
+### Java version
+
+Jupyter `scipy` dependencies installed, Java and SPARQL kernel
 
 ```bash
-docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:scala .
+docker build -f Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:java .
+```
+
+### Spark version
+
+All-spark version with tensorflow, spark installed (the most complete, but large image)
+
+```bash
+docker build -f Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:spark .
+```
+
+### Julia version
+
+> Not used or tested at the moment
+
+Use different tags for different versions, e.g. for a Julia notebook build:
+
+```bash
+docker build -f julia.Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:julia .
 ```
 

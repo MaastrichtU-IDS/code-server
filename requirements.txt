@@ -26,4 +26,8 @@ xlrd==1.2.*
 
 ### tensorflow-notebook
 
-tensorflow==2.0.0
+tensorflow==2.3.0
+
+### pyspark
+
+pyarrow==1.0.*
