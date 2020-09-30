@@ -19,7 +19,7 @@ metadata:
     openshift.io/documentation-url: https://maastrichtu-ids.github.io/dsri-documentation
     openshift.io/support-url: https://maastrichtu-ids.github.io/dsri-documentation/help
 labels:
-  template: template-jupyterhub
+  template: jupyterhub-deployer
 parameters:
 - name: APPLICATION_NAME
   displayName: Application name
