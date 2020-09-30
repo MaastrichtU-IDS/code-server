@@ -1,38 +1,35 @@
-VisualStudio Code server:
-
-* See [cdr/code-server on GitHub](https://github.com/cdr/code-server).
-* See [codercom/code-server on DockerHub](https://hub.docker.com/r/codercom/code-server).
+Built based on https://github.com/jackfrost373/jupyter-root/tree/master/root-notebook
 
 ## Build custom code-server image
 
-VisualStudio Code server with additional packages installed:
+JupyterLab with additional packages and kernel installed:
 
+* Jupyter `scipy` and `tensorflow` packages installed
 * Java 11 and Maven
-* Fortran compiler
+* IJava kernel
+* SPARQL kernel
 
 Build:
 
 ```bash
-docker build -t ghcr.io/maastrichtu-ids/vscode-server .
+docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift .
 ```
 
-Run on http://localhost:8080
+Run on http://localhost:8888
 
 ```bash
-docker run -it --rm --name vscode-server -p 8080:8080 -e PASSWORD=yo ghcr.io/maastrichtu-ids/vscode-server
+docker run -it --rm --name jupyterlab-on-openshift -p 8888:8888 -e JUPYTER_NOTEBOOK_PASSWORD=password ghcr.io/maastrichtu-ids/jupyterlab-on-openshift
 ```
-
-> We recommend to use Google Chrome web browser, copy/paste in the terminal does not work on Firefox.
 
 Push updated image:
 
 ```bash
-docker push ghcr.io/maastrichtu-ids/vscode-server
+docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift
 ```
 
-Use different tags for different versions, e.g. for a Spark build:
+Use different tags for different versions, e.g. for a Scala build:
 
 ```bash
-docker build -t ghcr.io/maastrichtu-ids/vscode-server:spark .
+docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:scala .
 ```
 
