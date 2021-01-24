@@ -1,66 +1,34 @@
-Built based on https://github.com/jackfrost373/jupyter-root/tree/master/root-notebook
+VisualStudio Code server image based on https://github.com/cdr/code-server
 
-## Build custom code-server image
+Additionally installed: Python3, yarn, PHP and Fortran
 
-JupyterLab with additional packages and kernel installed:
+> Hosted on GitHub Container Registry to avoid DockerHub pull limitations.
 
-* Jupyter `scipy` and `tensorflow` packages installed
-* Java 11 and Maven
-* IJava kernel
-* SPARQL kernel
-* Spark for Python
+See also: [jefferyb image for OpenShift](https://github.com/jefferyb/code-server-openshift)
 
-Build:
+## Automatically updated
 
-```bash
-docker build -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift .
-```
+The image is automatically updated every week by a GitHub Actions workflow to [codercom/code-server:latest](https://hub.docker.com/r/codercom/code-server)
 
-Run on http://localhost:8888
+## Build
 
 ```bash
-docker run -it --rm --name jupyterlab-on-openshift -p 8888:8888 -e JUPYTER_NOTEBOOK_PASSWORD=password ghcr.io/maastrichtu-ids/jupyterlab-on-openshift
+docker build -t ghcr.io/maastrichtu-ids/vscode-server:latest .
 ```
 
-Push updated image:
+## Push
 
 ```bash
-docker push ghcr.io/maastrichtu-ids/jupyterlab-on-openshift
+docker push ghcr.io/maastrichtu-ids/vscode-server:latest
 ```
 
-### Java version
-
-Jupyter `scipy` dependencies installed, Java and SPARQL kernel
+## Run
 
 ```bash
-docker build -f Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:java .
+docker run --rm -it -p 8080:8080 -e PASSWORD=password -v $(pwd):/home/coder ghcr.io/maastrichtu-ids/vscode-server:latest
 ```
 
-### Spark version
+In the container:
 
-All-spark version with tensorflow, spark installed (the most complete, but large image)
-
-```bash
-docker build -f Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:spark .
-```
-
-### Julia version
-
-> Not used or tested at the moment
-
-Use different tags for different versions, e.g. for a Julia notebook build:
-
-```bash
-docker build -f julia.Dockerfile -t ghcr.io/maastrichtu-ids/jupyterlab-on-openshift:julia .
-```
-
-## JupyterHub with GitHub OAuth template
-
-You can also find an OpenShift template based on [jackfrost373/jupyter-root](https://github.com/jackfrost373/jupyter-root) and https://github.com/jupyter-on-openshift/jupyterhub-quickstart
-
-Add the template to your project:
-
-```bash
-oc apply -f template-jupyterhub.yml
-```
-
+* User with `sudo` privilege: `coder`
+* Workspace path: `/home/coder`
