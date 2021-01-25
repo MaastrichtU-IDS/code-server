@@ -1,5 +1,7 @@
 FROM codercom/code-server:latest
 
+LABEL org.opencontainers.image.source https://github.com/MaastrichtU-IDS/code-server
+
 USER root
 
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
