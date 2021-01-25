@@ -1,6 +1,6 @@
 **VisualStudio Code server** image based on https://github.com/cdr/code-server
 
-* Hosted on [GitHub Container Registry](https://github.com/orgs/MaastrichtU-IDS/packages/container/package/code-server) ([ghcr.io](https://ghcr.io)) to avoid DockerHub pull limitations.
+* Hosted on [GitHub Container Registry](https://github.com/orgs/MaastrichtU-IDS/packages/container/package/code-server) ([ghcr.io](https://ghcr.io)) to avoid DockerHub pull limitations, and easily deploy on clusters (such as Kubernetes).
 * Additionally installed: Python3, NodeJS (npm, yarn), Java JDK 11, PHP, Fortran
 
 > Alternative: [jefferyb code-server image for OpenShift](https://github.com/jefferyb/code-server-openshift)

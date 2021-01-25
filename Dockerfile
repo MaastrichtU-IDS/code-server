@@ -16,16 +16,10 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     nodejs texlive-latex-extra texlive-xetex \
     yarn \
     default-jdk \
-    gfortran \
-    php \
-    php-xml \
-    php-json \
-    php-curl \
-    php-bz2 \
-    php-yaml \
-    php-dev \
-    php-symfony \
-    php-mbstring && \
+    php php-symfony \
+    php-json php-yaml php-xml \
+    php-dev php-mbstring php-curl php-bz2 \
+    gfortran && \
   rm -rf /var/lib/apt/lists/*
 
 USER 1000
