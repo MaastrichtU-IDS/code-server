@@ -39,6 +39,8 @@ docker push ghcr.io/maastrichtu-ids/code-server:latest
 
 ## VisualStudio Code on Nvidia GPU
 
+Images hosted on the GitHub Container Registry: https://github.com/orgs/MaastrichtU-IDS/packages/container/package/code-server-gpu
+
 Based on Docker images provided by Nvidia:
 
 * Tensorflow: https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
@@ -51,25 +53,25 @@ You can also build the images locally:
 Build Tensorflow:
 
 ```bash
-docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:21.05-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:21.05-tf2-py3 -f Dockerfile.gpu .
+docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:21.05-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3 -f Dockerfile.gpu .
 ```
 
 Build PyTorch:
 
 ```bash
-docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:21.05-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:21.05-tf2-py3 -f Dockerfile.gpu .
+docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:21.05-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:pytorch-21.05-py3 -f Dockerfile.gpu .
 ```
 
 
 Test to run it locally:
 
 ```bash
-docker run -it --rm --name vscode --network host -p 8080:8080 -e PASSWORD=password ghcr.io/maastrichtu-ids/code-server-gpu:21.05-tf2-py3
+docker run -it --rm --name vscode --network host -p 8080:8080 -e PASSWORD=password ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3
 ```
 
 Push:
 
 ```bash
-docker push ghcr.io/maastrichtu-ids/code-server-gpu:21.05-tf2-py3
+docker push ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3
 ```
 
