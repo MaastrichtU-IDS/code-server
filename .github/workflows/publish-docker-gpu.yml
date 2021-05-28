@@ -39,7 +39,7 @@ jobs:
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=tensorflow-${echo $TENSORFLOW_IMAGE | rev | cut -d ":" -f1 | rev}
+          VERSION=tensorflow-$(echo $TENSORFLOW_IMAGE | rev | cut -d ":" -f1 | rev)
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
@@ -68,7 +68,7 @@ jobs:
 
           # Change all uppercase to lowercase
           IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
-          VERSION=pytorch-${echo $PYTORCH_IMAGE | rev | cut -d ":" -f1 | rev}
+          VERSION=pytorch-$(echo $PYTORCH_IMAGE | rev | cut -d ":" -f1 | rev)
 
           echo IMAGE_ID=$IMAGE_ID
           echo VERSION=$VERSION
