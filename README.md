@@ -42,7 +42,11 @@ docker push ghcr.io/maastrichtu-ids/code-server:latest
 Based on Docker images provided by Nvidia:
 
 * Tensorflow: https://ngc.nvidia.com/catalog/containers/nvidia:tensorflow
-* PyTorch: https://ngc.nvidia.com/catalog/containers/pytorch
+* PyTorch: https://ngc.nvidia.com/catalog/containers/nvidia:pytorch
+
+The best way to update the images is to update the version of the environment variables `TENSORFLOW_IMAGE` and `PYTORCH_IMAGE` in the [`publish-docker-gpu.yml` workflow](https://github.com/MaastrichtU-IDS/code-server/blob/main/.github/workflows/publish-docker-gpu.yml), and push the changes to the `main` branch, the new images version will be built and published by GitHub Actions
+
+You can also build the images locally:
 
 Build Tensorflow:
 
