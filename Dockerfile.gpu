@@ -6,7 +6,7 @@ LABEL org.opencontainers.image.source https://github.com/MaastrichtU-IDS/code-se
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
 WORKDIR /root
-EXPOSE 8080
+EXPOSE 8081
 
 ENTRYPOINT [ "code-server" ]
 CMD [ "--bind-addr", "0.0.0.0:8081" ]

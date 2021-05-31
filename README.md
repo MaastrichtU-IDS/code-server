@@ -50,7 +50,7 @@ Based on Docker images provided by Nvidia:
 
 The best way to update the images is to update the version of the environment variables `TENSORFLOW_IMAGE` and `PYTORCH_IMAGE` in the [`publish-docker-gpu.yml` workflow](https://github.com/MaastrichtU-IDS/code-server/blob/main/.github/workflows/publish-docker-gpu.yml), and push the changes to the `main` branch, the new images version will be built and published by GitHub Actions
 
-You can also build the images locally:
+You can also build the images locally.
 
 Build Tensorflow:
 
@@ -68,7 +68,7 @@ docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:21.05-py3 -t ghcr.i
 Test to run it locally:
 
 ```bash
-docker run -it --rm --name vscode --network host -p 8080:8080 -e PASSWORD=password ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3
+docker run -it --rm -p 8081:8081 -e PASSWORD=password ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3
 ```
 
 Push:
