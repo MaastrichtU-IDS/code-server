@@ -22,4 +22,6 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     gfortran && \
   rm -rf /var/lib/apt/lists/*
 
+WORKDIR /home/coder/project
+
 USER 1000
