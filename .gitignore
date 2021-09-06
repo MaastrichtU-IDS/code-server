@@ -2,3 +2,5 @@
 .config
 .local
 .bash_history
+.vscode
+.Trash-*

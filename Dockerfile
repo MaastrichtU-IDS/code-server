@@ -15,6 +15,7 @@ RUN apt-get update -y && \
       php php-symfony \
       php-json php-yaml php-xml \
       php-dev php-mbstring php-curl php-bz2 \
+      mariadb-server \
       gfortran && \
     rm -rf /var/lib/apt/lists/*
 
@@ -39,17 +40,45 @@ RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/minif
     conda config --system --set auto_update_conda false && \
     conda config --system --set show_channel_urls true
 
-RUN conda install --quiet --yes \
+RUN conda install --quiet -y \
     conda \
     pip \
     nodejs \
     yarn \
     openjdk \
-    maven
+    maven \
+    sbt \
+    jupyter notebook pylint
 
-RUN conda update --all --quiet --yes && \
+RUN conda update --all --quiet -y && \
     conda clean --all -f -y 
+
+ENV PATH="$PATH:/home/coder/.yarn/bin"
+RUN yarn global add @rmlio/yarrrml-parser
+
+# Download latest RML mapper in /opt/rmlmapper.jar
+RUN curl -s https://api.github.com/repos/RMLio/rmlmapper-java/releases/latest \
+    | grep browser_download_url | grep .jar | cut -d '"' -f 4 \
+    | wget -O /opt/rmlmapper.jar -qi -
+
+# Download SHACL compact converter
+RUN wget -O /opt/shaclconvert.jar https://gitlab.ontotext.com/yasen.marinov/shaclconvert/-/raw/master/built/shaclconvert.jar
+# java -jar /opt/shaclconvert.jar shapes.shaclc shapes.shacl
+
+
+RUN code-server --install-extension redhat.vscode-yaml \
+        --install-extension ms-python.python \
+        --install-extension vscjava.vscode-java-pack \
+        --install-extension ginfuru.ginfuru-better-solarized-dark-theme
 
 RUN mkdir -p /home/coder/project
 
+ADD start.sh /opt/start.sh
+COPY --chown=1000 settings.json /home/coder/.local/share/code-server/User/settings.json
+
+# Fix permission issues when editing settings.json?
+# RUN chmod 777 /home/coder/.local/share/code-server/User/settings.json
+
 WORKDIR /home/coder/project
+
+ENTRYPOINT [ "/opt/start.sh" ]

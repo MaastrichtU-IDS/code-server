@@ -9,21 +9,30 @@
 
 [![Publish Docker image](https://github.com/MaastrichtU-IDS/code-server/workflows/Publish%20Docker%20image/badge.svg)](https://github.com/MaastrichtU-IDS/code-server/actions) [![Publish GPU Docker image](https://github.com/MaastrichtU-IDS/code-server/actions/workflows/publish-docker-gpu.yml/badge.svg)](https://github.com/MaastrichtU-IDS/code-server/actions/workflows/publish-docker-gpu.yml)
 
-
 The image on [ghcr.io](https://ghcr.io) is automatically updated every week (Monday at 3:00 GMT+1) by a GitHub Actions workflow to match the `latest` tag of [codercom/code-server](https://hub.docker.com/r/codercom/code-server)
+
+This image extends the [`Dockerfile`](https://github.com/cdr/code-server/blob/main/ci/release-image/Dockerfile) defined at https://github.com/cdr/code-server
 
 ## Code server on CPU
 
 ### Run
 
 ```bash
-docker run --rm -it -p 8080:8080 -e PASSWORD=password -v $(pwd):/home/coder ghcr.io/maastrichtu-ids/code-server:latest
+docker run --rm -it -p 8080:8080 -e PASSWORD=password -v $(pwd):/home/coder/project ghcr.io/maastrichtu-ids/code-server:latest
 ```
 
 In the container:
 
 * User, with `sudo` privileges: `coder`
 * Workspace path: `/home/coder`
+
+You can also provide the URL of a git repository to be cloned at start, if a `requirements.txt`, `yarn.lock` or `package-lock.json` are present, they will be automatically installed
+
+```bash
+docker run --rm -it -p 8080:8080 -e PASSWORD=password -e GIT_URL=https://github.com/MaastrichtU-IDS/play-fair ghcr.io/maastrichtu-ids/code-server:latest
+```
+
+ 
 
 ### Build
 
