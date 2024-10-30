@@ -21,5 +21,7 @@
         "editor.quickSuggestions": {
             "strings": true
         }
-    }
+    },
+    "resmon.updatefrequencyms": 3000,
+    "resmon.color": "#b0bec5",
 }
