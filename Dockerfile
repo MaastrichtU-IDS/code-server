@@ -69,7 +69,21 @@ RUN wget -O /opt/shaclconvert.jar https://gitlab.ontotext.com/yasen.marinov/shac
 RUN code-server --install-extension redhat.vscode-yaml \
         --install-extension ms-python.python \
         --install-extension vscjava.vscode-java-pack \
-        --install-extension ginfuru.ginfuru-better-solarized-dark-theme
+        --install-extension ginfuru.ginfuru-better-solarized-dark-theme \
+        --install-extension anwar.resourcemonitor \
+        --install-extension rintoj.json-organizer \
+        --install-extension zaaack.markdown-editor \
+        --install-extension garlicbreadcleric.document-preview \
+        --install-extension bungcip.better-toml \
+        --install-extension ginfuru.ginfuru-better-solarized-dark-theme \
+        --install-extension oderwat.indent-rainbow \
+        --install-extension mechatroner.rainbow-csv \
+        --install-extension GrapeCity.gc-excelviewer \
+        --install-extension yzhang.markdown-all-in-one \
+        --install-extension redhat.vscode-xml \
+        --install-extension ms-mssql.mssql \
+        # --install-extension ms-azuretools.vscode-docker \
+        --install-extension eamodio.gitlens
 
 RUN mkdir -p /home/coder/project
 
