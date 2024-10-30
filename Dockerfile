@@ -56,7 +56,7 @@ RUN conda update --all --quiet -y && \
 RUN mkdir -p /home/coder/project
 
 ENV PATH="$PATH:/home/.yarn/bin"
-RUN yarn global add @rmlio/yarrrml-parser
+RUN yarn dlx add @rmlio/yarrrml-parser
 
 # Download latest RML mapper in /opt/rmlmapper.jar
 RUN curl -s https://api.github.com/repos/RMLio/rmlmapper-java/releases/latest \
