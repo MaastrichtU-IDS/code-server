@@ -53,6 +53,8 @@ RUN conda install --quiet -y \
 RUN conda update --all --quiet -y && \
     conda clean --all -f -y 
 
+RUN mkdir -p /home/coder/project
+
 ENV PATH="$PATH:/home/.yarn/bin"
 RUN yarn global add @rmlio/yarrrml-parser
 
@@ -84,8 +86,6 @@ RUN code-server --install-extension redhat.vscode-yaml \
         --install-extension ms-mssql.mssql \
         # --install-extension ms-azuretools.vscode-docker \
         --install-extension eamodio.gitlens
-
-RUN mkdir -p /home/coder/project
 
 ADD start.sh /opt/start.sh
 COPY --chown=1000 settings.json /home/coder/.local/share/code-server/User/settings.json
