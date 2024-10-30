@@ -53,7 +53,7 @@ RUN conda install --quiet -y \
 RUN conda update --all --quiet -y && \
     conda clean --all -f -y 
 
-ENV PATH="$PATH:/home/coder/.yarn/bin"
+ENV PATH="$PATH:/home/.yarn/bin"
 RUN yarn global add @rmlio/yarrrml-parser
 
 # Download latest RML mapper in /opt/rmlmapper.jar
