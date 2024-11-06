@@ -4,6 +4,7 @@ if [ -n "$GIT_URL" ]; then
     git clone $GIT_URL /home/coder/project
 fi
 
+sudo chown -R 1000:1000 /home/coder/project
 cd /home/coder/project
 
 if [ -f "requirements.txt" ]; then
