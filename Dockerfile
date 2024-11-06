@@ -20,7 +20,6 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/*
 
 RUN chown -R 1000:1000 /opt
-RUN chown -R 1000:1000 /home/
 USER 1000
 
 # Install conda
@@ -55,6 +54,10 @@ RUN conda update --all --quiet -y && \
     conda clean --all -f -y 
 
 RUN mkdir -p /home/coder/project
+
+USER root
+RUN chown -R 1000:1000 /home/coder/project
+USER 1000
 
 ENV PATH="$PATH:/home/.yarn/bin"
 #RUN yarn add @rmlio/yarrrml-parser
