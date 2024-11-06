@@ -56,7 +56,7 @@ RUN conda update --all --quiet -y && \
 RUN mkdir -p /home/coder/project
 
 USER root
-RUN chown -R 1000:1000 /home/coder/project
+RUN chown -R 1000:1000 /home/coder/project/
 USER 1000
 
 ENV PATH="$PATH:/home/.yarn/bin"
