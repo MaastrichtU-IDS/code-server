@@ -55,9 +55,9 @@ RUN conda update --all --quiet -y && \
 
 RUN mkdir -p /home/coder/project
 
-USER root
-RUN chown -R 1000:1000 /home/coder/project/
-USER 1000
+#USER root
+
+#USER 1000
 
 ENV PATH="$PATH:/home/.yarn/bin"
 #RUN yarn add @rmlio/yarrrml-parser
@@ -99,5 +99,7 @@ COPY --chown=1000 settings.json /home/coder/.local/share/code-server/User/settin
 # RUN chmod 777 /home/coder/.local/share/code-server/User/settings.json
 
 WORKDIR /home/coder/project
+
+RUN chown -R 1000:1000 /home/coder/project/
 
 ENTRYPOINT [ "/opt/start.sh" ]
