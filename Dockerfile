@@ -54,6 +54,7 @@ RUN conda update --all --quiet -y && \
     conda clean --all -f -y 
 
 RUN mkdir -p /home/coder/project
+RUN chown -R /home/coder/project
 
 ENV PATH="$PATH:/home/.yarn/bin"
 #RUN yarn add @rmlio/yarrrml-parser
