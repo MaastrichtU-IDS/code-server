@@ -100,6 +100,6 @@ COPY --chown=1000 settings.json /home/coder/.local/share/code-server/User/settin
 
 WORKDIR /home/coder/project
 
-RUN chown -R 1000:1000 /home/coder/project/
+#RUN chown -R 1000:1000 /home/coder/project/
 
 ENTRYPOINT [ "/opt/start.sh" ]
