@@ -32,7 +32,7 @@ ENV PATH="${CONDA_DIR}/bin:${PATH}"
     # HOME="/home/${NB_USER}" \
     # CONDA_VERSION="${conda_version}"
 
-RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/miniforge/releases/latest | grep browser_download_url | grep -P "Mambaforge-\d+((\.|-)\d+)*-Linux-x86_64.sh" | grep -v sha256 | cut -d '"' -f 4) && \
+RUN export download_url=$(curl -s https://api.github.com/repos/conda-forge/miniforge/releases/latest | grep browser_download_url | grep -P "Miniforge3-\d+((\.|-)\d+)*-Linux-x86_64.sh" | grep -v sha256 | cut -d '"' -f 4) && \
     echo "Downloading latest miniforge from $download_url" && \
     curl -Lf -o miniforge.sh $download_url && \
     /bin/bash "miniforge.sh" -f -b -p "${CONDA_DIR}" && \
