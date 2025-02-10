@@ -61,7 +61,7 @@ RUN mkdir -p /home/coder/project
 
 ENV PATH="$PATH:/home/.yarn/bin"
 #RUN yarn add @rmlio/yarrrml-parser
-RUN npm i -g @rmlio/yarrrml-parser@0.12
+RUN npm i -g @rmlio/yarrrml-parser
 
 # Download latest RML mapper in /opt/rmlmapper.jar
 RUN curl -s https://api.github.com/repos/RMLio/rmlmapper-java/releases/latest \
