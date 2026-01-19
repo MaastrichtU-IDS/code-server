@@ -5,7 +5,7 @@ on:
     branches: [ main ]
     paths:
     - 'Dockerfile'
-    - '.github/workflows/publish-docker.yml'
+    - '.github/workflows/publish-vscode-base.yml'
   # schedule:
   # Monday at 04:00 AM UTC
   #   - cron: '0 4 * * 1'
