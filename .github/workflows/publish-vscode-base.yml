@@ -6,7 +6,6 @@ on:
     paths:
     - 'Dockerfile'
     - '.github/workflows/publish-docker.yml'
-  schedule:
   # schedule:
   # Monday at 04:00 AM UTC
   #   - cron: '0 4 * * 1'
