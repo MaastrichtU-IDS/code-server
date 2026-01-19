@@ -23,5 +23,5 @@
         }
     },
     "resmon.updatefrequencyms": 3000,
-    "resmon.color": "#b0bec5",
+    "resmon.color": "#b0bec5"
 }

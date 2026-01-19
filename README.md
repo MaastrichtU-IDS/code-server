@@ -1,9 +1,7 @@
 **VisualStudio Code server** images based on https://github.com/cdr/code-server
 
 * Hosted on [GitHub Container Registry](https://github.com/orgs/MaastrichtU-IDS/packages/container/package/code-server) ([ghcr.io](https://ghcr.io)) to avoid DockerHub pull limitations, and easily deploy on clusters (such as Kubernetes).
-* Additionally installed on the CPU image: Python3, NodeJS (npm, yarn), Java JDK 11, PHP, Fortran
-
-> Alternative: [jefferyb code-server image for OpenShift](https://github.com/jefferyb/code-server-openshift)
+* Additionally installed on the CPU image: Python3, NodeJS (npm, yarn), Java JDK 17s, PHP, Fortran
 
 ## Automatically updated
 
@@ -32,11 +30,9 @@ You can also provide the URL of a git repository to be cloned at start, if a `re
 docker run --rm -it -p 8080:8080 -e PASSWORD=password -e GIT_URL=https://github.com/MaastrichtU-IDS/play-fair ghcr.io/maastrichtu-ids/code-server:latest
 ```
 
- 
-
 ### Build
 
-Feel free to edit the `Dockerfile` to install additional packages in the image.
+To build the image:
 
 ```bash
 docker build -t ghcr.io/maastrichtu-ids/code-server:latest .
@@ -72,7 +68,6 @@ Build PyTorch:
 ```bash
 docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:21.05-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:pytorch-21.05-py3 -f Dockerfile.gpu .
 ```
-
 
 Test to run it locally:
 
