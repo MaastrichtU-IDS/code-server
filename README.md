@@ -3,14 +3,6 @@
 * Hosted on [GitHub Container Registry](https://github.com/orgs/MaastrichtU-IDS/packages/container/package/code-server) ([ghcr.io](https://ghcr.io)) to avoid DockerHub pull limitations, and easily deploy on clusters (such as Kubernetes).
 * Additionally installed on the CPU image: Python3, NodeJS (npm, yarn), Java JDK 17s, PHP, Fortran
 
-## Automatically updated
-
-[![Publish Docker image](https://github.com/MaastrichtU-IDS/code-server/workflows/Publish%20Docker%20image/badge.svg)](https://github.com/MaastrichtU-IDS/code-server/actions) [![Publish GPU Docker image](https://github.com/MaastrichtU-IDS/code-server/actions/workflows/publish-docker-gpu.yml/badge.svg)](https://github.com/MaastrichtU-IDS/code-server/actions/workflows/publish-docker-gpu.yml)
-
-The image on [ghcr.io](https://ghcr.io) is automatically updated every week (Monday at 3:00 GMT+1) by a GitHub Actions workflow to match the `latest` tag of [codercom/code-server](https://hub.docker.com/r/codercom/code-server)
-
-This image extends the [`Dockerfile`](https://github.com/cdr/code-server/blob/main/ci/release-image/Dockerfile) defined at https://github.com/cdr/code-server
-
 ## Code server on CPU
 
 ### Run
@@ -60,13 +52,13 @@ You can also build the images locally.
 Build Tensorflow:
 
 ```bash
-docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:21.05-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow-21.05-tf2-py3 -f Dockerfile.gpu .
+docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:25.02-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow:25.02-tf2-py3 -f tensorflow.Dockerfile .
 ```
 
 Build PyTorch:
 
 ```bash
-docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:21.05-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:pytorch-21.05-py3 -f Dockerfile.gpu .
+docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:25.02-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:pytorch:25.02-py3 -f pytorch.Dockerfile .
 ```
 
 Test to run it locally:

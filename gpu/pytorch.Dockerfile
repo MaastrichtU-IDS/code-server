@@ -1,7 +1,7 @@
-ARG NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:21.05-tf2-py3
+ARG NVIDIA_IMAGE=nvcr.io/nvidia/pytorch:25.02-py3
 FROM $NVIDIA_IMAGE
 
-LABEL org.opencontainers.image.source https://github.com/MaastrichtU-IDS/code-server
+LABEL org.opencontainers.image.source=https://github.com/MaastrichtU-IDS/code-server
 
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
