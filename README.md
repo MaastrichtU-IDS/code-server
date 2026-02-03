@@ -52,7 +52,7 @@ You can also build the images locally.
 Build Tensorflow:
 
 ```bash
-docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/nvcr.io/nvidia/tensorflow:25.02-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow:25.02-tf2-py3 -f tensorflow.Dockerfile .
+docker build --build-arg NVIDIA_IMAGE=nvcr.io/nvidia/tensorflow:25.02-tf2-py3 -t ghcr.io/maastrichtu-ids/code-server-gpu:tensorflow:25.02-tf2-py3 -f tensorflow.Dockerfile .
 ```
 
 Build PyTorch:
